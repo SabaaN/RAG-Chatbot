@@ -1,0 +1,6 @@
+openai
+pymupdf
+chromadb
+python-dotenv
+google-genai
+streamlit
