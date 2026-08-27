@@ -2,3 +2,5 @@
 rag/
 __pycache__/ 
 vectorstore/
+document.pdf
+instructions.md
