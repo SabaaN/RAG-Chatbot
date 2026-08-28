@@ -157,7 +157,7 @@ st.markdown(
         .hero-wrap {
             display: flex;
             align-items: flex-start;
-            justify-content: space-between;
+            justify-content: center;
             gap: 1.5rem;
             margin-bottom: 1.8rem;
             padding-bottom: 1.6rem;
@@ -492,10 +492,6 @@ st.markdown(
     <div class="hero-wrap">
         <div class="hero-text">
             <h1 class="hero-title">Ask your <span>FAQ Assistant</span></h1>
-            <p class="hero-desc">
-                Get instant, grounded answers from your product knowledge base.
-                Every response is sourced so you can verify it.
-            </p>
         </div>
     </div>
     """,
