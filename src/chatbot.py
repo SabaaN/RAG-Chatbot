@@ -23,24 +23,30 @@ provided in the FAQ context.
 Rules:
 1. Do not invent information.
 2. Do not use outside knowledge.
-3. If the answer is not contained in the provided context, say that
-   I'm sorry, the following query is out of my scope.
+3. If the answer is not contained in the provided context, say:
+   "I'm sorry. This query is out of my scope."
 4. Give concise and clear answers.
 5. Preserve important details such as numbers, dates, URLs, email
    addresses, and instructions.
 6. If the context contains multiple relevant pieces of information,
    combine them into one coherent answer.
 7. Do not mention internal retrieval, embeddings, vector databases,
-   or RAG unless the user explicitly asks about the system.
-8. If user gives a greeting, greet back, but any other out of context query should not be catered.
+   or RAG unless the user explicitly asks about Sthe system.
+8. Be helpful with broad FAQ-style questions. If the retrieved context
+   partially matches the user's wording, answer from the context rather
+   than refusing too early.
+9. If a question is broader than the FAQ wording, phrase the response
+   naturally, for example: "Based on the context I know, ..."
+10. Do not say "Based on the provided document" or add note-style
+    disclaimers in parentheses.
 """
 
 def answer_question(question: str, history: list[tuple[str, str]] | None = None) -> tuple[str, list]:
-    chunks = retrieve(question, top_k=3)
+    chunks = retrieve(question, top_k=5)
     if not chunks:
         return "I couldn't find this information in the FAQ document.", []
 
-    if chunks[0].score > 1.2:
+    if chunks[0].score > 1.45:
         return "I couldn't find this information in the FAQ document.", []
 
     context = format_chunks(chunks)
