@@ -8,6 +8,18 @@ from google import genai
 
 from src.config import CHROMA_COLLECTION_NAME, get_embedding_model, get_gemini_api_key, get_vector_store_dir
 
+from functools import lru_cache
+
+@lru_cache(maxsize=1)
+def get_gemini_client() -> genai.Client:
+    get_gemini_api_key()
+    return genai.Client()
+
+@lru_cache(maxsize=1)
+def get_collection():
+    chroma_client = chromadb.PersistentClient(path=str(get_vector_store_dir()))
+    return chroma_client.get_or_create_collection(name=CHROMA_COLLECTION_NAME)
+
 
 @dataclass
 class RetrievedChunk:

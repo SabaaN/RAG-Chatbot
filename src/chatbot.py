@@ -7,6 +7,13 @@ from google import genai
 from src.config import get_chat_model, get_gemini_api_key
 from src.retriever import format_chunks, retrieve
 
+from functools import lru_cache
+
+@lru_cache(maxsize=1)
+def _get_client() -> genai.Client:
+    get_gemini_api_key()
+    return genai.Client()
+
 
 SYSTEM_PROMPT = """You are an FAQ assistant.
 
@@ -28,9 +35,8 @@ Rules:
 8. If user gives a greeting, greet back, but any other out of context query should not be catered.
 """
 
-
 def answer_question(question: str, history: list[tuple[str, str]] | None = None) -> tuple[str, list]:
-    chunks = retrieve(question, top_k=5)
+    chunks = retrieve(question, top_k=3)
     if not chunks:
         return "I couldn't find this information in the FAQ document.", []
 
@@ -39,11 +45,11 @@ def answer_question(question: str, history: list[tuple[str, str]] | None = None)
 
     context = format_chunks(chunks)
     get_gemini_api_key()
-    client = genai.Client()
+    client = _get_client()
 
     conversation = ""
     if history:
-        recent = history[-6:]
+        recent = history[-5:]
         conversation = "\n".join(
             f"User: {user}\nAssistant: {assistant}" for user, assistant in recent
         )
